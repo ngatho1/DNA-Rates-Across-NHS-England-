@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NHS GP DNA Rate Analysis Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e2e8f0;min-height:100vh}
+
+.header{background:linear-gradient(135deg,#1a1f3a 0%,#1e2a4a 60%,#1a2535 100%);padding:24px 32px;border-bottom:1px solid #2d3a5a}
+.header h1{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-0.2px}
+.header p{font-size:0.78rem;color:#7c8db0;margin-top:5px}
+.header-accent{display:inline-block;background:#3b82f6;color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;margin-right:8px;letter-spacing:0.5px}
+
+.tabs{display:flex;gap:0;background:#0d1117;border-bottom:1px solid #1e2535;padding:0 24px;overflow-x:auto}
+.tab{padding:12px 20px;font-size:0.78rem;font-weight:600;cursor:pointer;color:#64748b;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;user-select:none}
+.tab.active{color:#60a5fa;border-bottom-color:#60a5fa}
+.tab:hover:not(.active){color:#94a3b8}
+
+.pane{display:none;padding:24px;animation:fadeIn .25s ease}
+.pane.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:#131c2e;border-radius:10px;padding:18px 16px;border-top:3px solid #3b82f6;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle,rgba(59,130,246,.12),transparent);border-radius:50%;transform:translate(20px,-20px)}
+.kpi .val{font-size:2.1rem;font-weight:900;line-height:1;color:#60a5fa}
+.kpi .label{font-size:0.7rem;color:#64748b;margin-top:5px;text-transform:uppercase;letter-spacing:.6px}
+.kpi .sub{font-size:0.74rem;color:#475569;margin-top:3px}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:#131c2e;border-radius:10px;padding:18px}
+.card.full{grid-column:1/-1}
+.card h3{font-size:0.74rem;color:#64748b;text-transform:uppercase;letter-spacing:.7px;margin-bottom:14px;font-weight:700}
+
+.insight{background:#131c2e;border-radius:10px;padding:16px;margin-bottom:14px;border-left:3px solid #f59e0b}
+.insight.blue{border-left-color:#3b82f6}
+.insight.green{border-left-color:#10b981}
+.insight.red{border-left-color:#ef4444}
+.insight.purple{border-left-color:#8b5cf6}
+.insight h3{font-size:0.76rem;color:#fbbf24;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;font-weight:700}
+.insight.blue h3{color:#60a5fa}
+.insight.green h3{color:#34d399}
+.insight.red h3{color:#f87171}
+.insight.purple h3{color:#a78bfa}
+.insight ul{list-style:none}
+.insight li{font-size:0.8rem;color:#cbd5e1;padding:5px 0;border-bottom:1px solid #1e2535;display:flex;gap:8px;align-items:flex-start}
+.insight li:last-child{border-bottom:none}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.68rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.b-red{background:#450a0a;color:#fca5a5}
+.b-green{background:#052e16;color:#86efac}
+.b-amber{background:#451a03;color:#fcd34d}
+.b-blue{background:#0c1a3a;color:#93c5fd}
+
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+th{background:#0d1117;color:#475569;text-transform:uppercase;font-size:.65rem;letter-spacing:.5px;padding:8px 10px;text-align:left;border-bottom:1px solid #1e2535}
+td{padding:7px 10px;border-bottom:1px solid #1a2535;color:#cbd5e1}
+tr:hover td{background:#1a2535}
+.bar-wrap{display:flex;align-items:center;gap:8px}
+.mini-bar{height:7px;border-radius:4px;min-width:2px;transition:width .3s}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏥 NHS GP Appointment DNA Rate Analysis</h1>
+  <p><span class="header-accent">DID NOT ATTEND</span> Patterns across regions, modes, deprivation &amp; time · Jul 2022 – Dec 2024</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="show('overview',this)">📊 National Overview</div>
+  <div class="tab" onclick="show('regions',this)">🗺️ Regional Breakdown</div>
+  <div class="tab" onclick="show('modes',this)">📞 Appointment Modes</div>
+  <div class="tab" onclick="show('deprivation',this)">🏘️ Deprivation</div>
+  <div class="tab" onclick="show('league',this)">🏆 Sub-ICB Table</div>
+  <div class="tab" onclick="show('conclusions',this)">💡 Key Conclusions</div>
+</div>
+
+<!-- OVERVIEW -->
+<div id="overview" class="pane active">
+  <div class="kpi-row">
+    <div class="kpi"><div class="val">~4.8%</div><div class="label">Avg National DNA Rate</div><div class="sub">Jul 2022 – Dec 2024</div></div>
+    <div class="kpi" style="border-color:#ef4444"><div class="val" style="color:#f87171">12.15%</div><div class="label">Highest Region</div><div class="sub">London</div></div>
+    <div class="kpi" style="border-color:#10b981"><div class="val" style="color:#34d399">4.51%</div><div class="label">Lowest Region</div><div class="sub">South West</div></div>
+    <div class="kpi" style="border-color:#f59e0b"><div class="val" style="color:#fbbf24">2.7×</div><div class="label">Regional Spread</div><div class="sub">London vs South West</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card full"><h3>📈 National DNA Rate Trend (Jul 2022 – Dec 2024)</h3><canvas id="c-trend" height="80"></canvas></div>
+    <div class="card"><h3>📱 Appointment Mode Mix Shift Over Time</h3><canvas id="c-mix" height="130"></canvas></div>
+    <div class="card"><h3>📋 DNA Rate by Appointment Mode</h3><canvas id="c-mode" height="130"></canvas></div>
+  </div>
+</div>
+
+<!-- REGIONS -->
+<div id="regions" class="pane">
+  <div class="grid-2">
+    <div class="card full"><h3>🗺️ DNA Rate by NHS Region (ranked, highest to lowest)</h3><canvas id="c-reg" height="80"></canvas></div>
+    <div class="card full"><h3>📞 Face-to-Face vs Telephone DNA Rate by Region</h3><canvas id="c-regmode" height="80"></canvas></div>
+  </div>
+</div>
+
+<!-- MODES -->
+<div id="modes" class="pane">
+  <div class="kpi-row">
+    <div class="kpi"><div class="val">10.65%</div><div class="label">Face-to-Face DNA</div><div class="sub">Highest of all modes</div></div>
+    <div class="kpi" style="border-color:#0ea5e9"><div class="val" style="color:#38bdf8">5.77%</div><div class="label">Telephone DNA</div><div class="sub">46% lower than F2F</div></div>
+    <div class="kpi" style="border-color:#10b981"><div class="val" style="color:#34d399">2.68%</div><div class="label">Home Visit DNA</div><div class="sub">75% lower than F2F</div></div>
+    <div class="kpi" style="border-color:#8b5cf6"><div class="val" style="color:#a78bfa">1.94%</div><div class="label">Video/Online DNA</div><div class="sub">82% lower than F2F</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><h3>📊 DNA Rate by Mode</h3><canvas id="c-modedna" height="130"></canvas></div>
+    <div class="card"><h3>📈 Video/Online Appointment Growth (% of all appointments)</h3><canvas id="c-vid" height="130"></canvas></div>
+  </div>
+</div>
+
+<!-- DEPRIVATION -->
+<div id="deprivation" class="pane">
+  <div class="insight" style="border-color:#f59e0b">
+    <h3>⚠️ Counterintuitive Finding on Deprivation</h3>
+    <ul>
+      <li><span class="badge b-amber">Unexpected</span>Least deprived areas (bands 9–10) show the HIGHEST average DNA rate at 7.40% — not the most deprived (6.12%).</li>
+      <li><span class="badge b-blue">Caveat</span>Only 4 areas in the least deprived band vs 7 in bands 5–6. Wide min–max ranges (3.30%–11.30%) suggest outliers dominate the average.</li>
+      <li><span class="badge b-amber">Inference</span>Deprivation alone does not reliably predict DNA rate here — urban density, appointment mode mix and access patterns are likely confounders.</li>
+    </ul>
+  </div>
+  <div class="card"><h3>🏘️ Average DNA Rate &amp; Range by Deprivation Band (higher band = less deprived)</h3><canvas id="c-dep" height="120"></canvas></div>
+</div>
+
+<!-- LEAGUE TABLE -->
+<div id="league" class="pane">
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card" style="padding:12px">
+      <h3>🔴 Top 10 Highest DNA Rate Sub-ICBs</h3>
+      <table>
+        <tr><th>Sub-ICB</th><th>Region</th><th>DNA %</th></tr>
+        <tr><td>Staffs &amp; Stoke-on-Trent 05Q</td><td>Midlands</td><td><div class="bar-wrap"><div class="mini-bar" style="width:100px;background:#ef4444"></div><b style="color:#f87171">32.84%</b></div></td></tr>
+        <tr><td>Bristol, N.Somerset &amp; S.Glos</td><td>South West</td><td><div class="bar-wrap"><div class="mini-bar" style="width:66px;background:#f97316"></div><b style="color:#fb923c">21.84%</b></div></td></tr>
+        <tr><td>Herts &amp; West Essex 06N</td><td>East of England</td><td><div class="bar-wrap"><div class="mini-bar" style="width:65px;background:#f97316"></div><b style="color:#fb923c">21.49%</b></div></td></tr>
+        <tr><td>Bucks, Oxon &amp; Berks West 14Y</td><td>South East</td><td><div class="bar-wrap"><div class="mini-bar" style="width:53px;background:#eab308"></div><b style="color:#fbbf24">17.35%</b></div></td></tr>
+        <tr><td>Cheshire &amp; Merseyside 99A</td><td>North West</td><td><div class="bar-wrap"><div class="mini-bar" style="width:52px;background:#eab308"></div><b style="color:#fbbf24">16.93%</b></div></td></tr>
+        <tr><td>Lancashire &amp; S.Cumbria 02G</td><td>North West</td><td><div class="bar-wrap"><div class="mini-bar" style="width:47px;background:#eab308"></div><b style="color:#fbbf24">15.54%</b></div></td></tr>
+        <tr><td>Greater Manchester 14L</td><td>North West</td><td><div class="bar-wrap"><div class="mini-bar" style="width:45px;background:#eab308"></div><b style="color:#fbbf24">14.88%</b></div></td></tr>
+        <tr><td>Staffs &amp; Stoke-on-Trent 05W</td><td>Midlands</td><td><div class="bar-wrap"><div class="mini-bar" style="width:45px;background:#eab308"></div><b style="color:#fbbf24">14.72%</b></div></td></tr>
+        <tr><td>Lancashire &amp; S.Cumbria 01A</td><td>North West</td><td><div class="bar-wrap"><div class="mini-bar" style="width:44px;background:#eab308"></div><b style="color:#fbbf24">14.67%</b></div></td></tr>
+        <tr><td>Coventry &amp; Warwickshire</td><td>Midlands</td><td><div class="bar-wrap"><div class="mini-bar" style="width:44px;background:#eab308"></div><b style="color:#fbbf24">14.59%</b></div></td></tr>
+      </table>
+    </div>
+    <div class="card" style="padding:12px">
+      <h3>🟢 Bottom 10 Lowest DNA Rate Sub-ICBs</h3>
+      <table>
+        <tr><th>Sub-ICB</th><th>Region</th><th>DNA %</th></tr>
+        <tr><td>Humber &amp; N.Yorks 03H</td><td>NE &amp; Yorks</td><td><div class="bar-wrap"><div class="mini-bar" style="width:1px;background:#22c55e"></div><b style="color:#86efac">0.00%</b></div></td></tr>
+        <tr><td>Suffolk &amp; NE Essex 07K</td><td>East of England</td><td><div class="bar-wrap"><div class="mini-bar" style="width:1px;background:#22c55e"></div><b style="color:#86efac">0.00%</b></div></td></tr>
+        <tr><td>Suffolk &amp; NE Essex 06L</td><td>East of England</td><td><div class="bar-wrap"><div class="mini-bar" style="width:7px;background:#22c55e"></div><b style="color:#86efac">2.21%</b></div></td></tr>
+        <tr><td>Mid &amp; South Essex 99E</td><td>East of England</td><td><div class="bar-wrap"><div class="mini-bar" style="width:8px;background:#22c55e"></div><b style="color:#86efac">2.59%</b></div></td></tr>
+        <tr><td>Mid &amp; South Essex 99F</td><td>East of England</td><td><div class="bar-wrap"><div class="mini-bar" style="width:10px;background:#22c55e"></div><b style="color:#86efac">3.18%</b></div></td></tr>
+        <tr><td>West Yorkshire 03R</td><td>NE &amp; Yorks</td><td><div class="bar-wrap"><div class="mini-bar" style="width:10px;background:#22c55e"></div><b style="color:#86efac">3.23%</b></div></td></tr>
+        <tr><td>Cornwall &amp; Isles of Scilly</td><td>South West</td><td><div class="bar-wrap"><div class="mini-bar" style="width:10px;background:#22c55e"></div><b style="color:#86efac">3.27%</b></div></td></tr>
+        <tr><td>Sussex 97R</td><td>South East</td><td><div class="bar-wrap"><div class="mini-bar" style="width:10px;background:#22c55e"></div><b style="color:#86efac">3.30%</b></div></td></tr>
+        <tr><td>Dorset</td><td>South West</td><td><div class="bar-wrap"><div class="mini-bar" style="width:10px;background:#22c55e"></div><b style="color:#86efac">3.35%</b></div></td></tr>
+        <tr><td>Herts &amp; West Essex 07H</td><td>East of England</td><td><div class="bar-wrap"><div class="mini-bar" style="width:11px;background:#22c55e"></div><b style="color:#86efac">3.48%</b></div></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card"><h3>📊 Distribution of Sub-ICB DNA Rates — how are they spread?</h3><canvas id="c-dist" height="80"></canvas></div>
+</div>
+
+<!-- CONCLUSIONS -->
+<div id="conclusions" class="pane">
+  <div class="insight red">
+    <h3>🔑 1 · London is a national outlier demanding targeted action</h3>
+    <ul>
+      <li><span class="badge b-red">12.15%</span>London's DNA rate is 2.7× higher than South West (4.51%) and 40% worse than the next worst region (North West, 11.84%).</li>
+      <li><span class="badge b-blue">Implication</span>Urban density, transient population and high face-to-face volume likely drive this. Targeted London interventions could have the biggest national impact per pound spent.</li>
+    </ul>
+  </div>
+  <div class="insight blue">
+    <h3>🔑 2 · Appointment mode is the single strongest lever available</h3>
+    <ul>
+      <li><span class="badge b-red">5.5× gap</span>Face-to-face DNA rate (10.65%) is 5.5× higher than video/online (1.94%) and 1.8× higher than telephone (5.77%).</li>
+      <li><span class="badge b-green">Opportunity</span>Every 1% shift from face-to-face to telephone or digital saves thousands of appointments nationally. The mechanism is intuitive: lower friction = lower no-show, like how a phone call to your bank feels less daunting than walking in.</li>
+      <li><span class="badge b-blue">Trend</span>Video/online has grown from 0.58% → 5.54% of all appointments (Jul 22 – Dec 24), a near 10× increase. Momentum exists but ceiling is far higher.</li>
+    </ul>
+  </div>
+  <div class="insight green">
+    <h3>🔑 3 · Stable national average masks dramatic local variation</h3>
+    <ul>
+      <li><span class="badge b-amber">4.4–5.9%</span>National rates fluctuate in a narrow band — no systemic national crisis. But this is like a national average temperature hiding a heatwave in one city and snow in another.</li>
+      <li><span class="badge b-red">32.84%</span>Staffs &amp; Stoke-on-Trent (05Q) has a rate 15× higher than the 0% bottom performers. Even excluding that outlier, the range is ~3%–22%.</li>
+      <li><span class="badge b-blue">Implication</span>Policy must be locally targeted, not nationally uniform. Best performers have clear lessons for the worst.</li>
+    </ul>
+  </div>
+  <div class="insight" style="border-color:#f43f5e">
+    <h3>🔑 4 · Deprivation relationship is weaker and more complex than assumed</h3>
+    <ul>
+      <li><span class="badge b-amber">Counterintuitive</span>Least deprived areas (bands 9–10) average 7.40% DNA vs 6.12% for more deprived bands (5–6) — the opposite of the expected pattern.</li>
+      <li><span class="badge b-amber">Caveat</span>Small counts per band and huge ranges suggest confounders (urban mix, F2F vs telephone volume) dominate over deprivation signal.</li>
+      <li><span class="badge b-blue">Implication</span>Do not assume deprived areas are the primary DNA problem. Both ends of the deprivation spectrum contain high-DNA sub-ICBs requiring investigation.</li>
+    </ul>
+  </div>
+  <div class="insight purple">
+    <h3>🔑 5 · North West is a secondary hotspot beyond London</h3>
+    <ul>
+      <li><span class="badge b-red">11.84%</span>North West is second highest region, and 5 of the top 10 worst sub-ICBs sit within it (Greater Manchester, Lancashire, Cheshire clusters).</li>
+      <li><span class="badge b-blue">Implication</span>The concentration within North West suggests systemic, regional issues — not isolated GP-level problems. A regional improvement programme is warranted.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const cfg = (extra={}) => ({
+  responsive:true, maintainAspectRatio:true,
+  plugins:{legend:{labels:{color:'#94a3b8',font:{size:11},boxWidth:12}}},
+  scales:{
+    x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e2535'}},
+    y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e2535'}}
+  }, ...extra
+});
+
+let built={};
+function show(id,el){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  if(!built[id]){built[id]=true;setTimeout(()=>buildTab(id),50);}
+}
+
+// DATA
+const months30=['Jul 22','Aug 22','Sep 22','Oct 22','Nov 22','Dec 22','Jan 23','Feb 23','Mar 23','Apr 23','May 23','Jun 23','Jul 23','Aug 23','Sep 23','Oct 23','Nov 23','Dec 23','Jan 24','Feb 24','Mar 24','Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24'];
+const dnaRate=[4.83,4.66,5.21,5.93,5.30,5.17,4.60,4.69,4.83,4.74,4.70,4.70,4.66,4.60,5.46,5.55,4.92,4.85,4.41,4.48,4.48,4.49,4.51,4.48,5.04,4.46,4.51,5.51,4.79,4.66];
+
+// Mode mix — every 2nd month for display
+const mixM=['Jul 22','Sep 22','Nov 22','Jan 23','Mar 23','May 23','Jul 23','Sep 23','Nov 23','Jan 24','Mar 24','May 24','Jul 24','Sep 24','Nov 24'];
+const f2f=[66.95,69.66,71.18,70.78,71.14,70.49,69.55,72.18,69.76,68.57,68.00,67.82,67.39,67.66,68.28];
+const tel=[31.84,29.05,27.50,27.84,27.44,27.58,27.67,24.88,26.49,27.16,27.24,26.77,26.81,26.29,25.41];
+const vid=[0.58,0.65,0.64,0.64,0.69,1.05,1.87,2.05,2.77,3.23,3.76,4.34,4.76,5.02,5.23];
+
+function buildTab(id){
+  if(id==='overview'){
+    new Chart(document.getElementById('c-trend'),{type:'line',data:{labels:months30,datasets:[{label:'National DNA Rate %',data:dnaRate,borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,.1)',pointRadius:3,fill:true,tension:.35}]},options:{...cfg(),scales:{x:{ticks:{color:'#64748b',font:{size:9},maxTicksLimit:10},grid:{color:'#1e2535'}},y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e2535'},min:3.5,max:7}}}});
+    new Chart(document.getElementById('c-mix'),{type:'line',data:{labels:mixM,datasets:[{label:'Face-to-Face %',data:f2f,borderColor:'#f87171',fill:false,tension:.3,pointRadius:2},{label:'Telephone %',data:tel,borderColor:'#60a5fa',fill:false,tension:.3,pointRadius:2},{label:'Video/Online %',data:vid,borderColor:'#34d399',fill:false,tension:.3,pointRadius:2}]},options:{...cfg(),scales:{x:{ticks:{color:'#64748b',font:{size:9},maxTicksLimit:8},grid:{color:'#1e2535'}},y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e2535'}}}}});
+    new Chart(document.getElementById('c-mode'),{type:'bar',data:{labels:['Face-to-Face','Telephone','Home Visit','Video/Online'],datasets:[{label:'DNA Rate %',data:[10.65,5.77,2.68,1.94],backgroundColor:['#ef4444','#f59e0b','#10b981','#8b5cf6']}]},options:{...cfg(),plugins:{legend:{display:false}}}});
+  }
+  if(id==='regions'){
+    new Chart(document.getElementById('c-reg'),{type:'bar',data:{labels:['London','North West','Midlands','South East','NE & Yorks','East of England','South West'],datasets:[{label:'DNA Rate %',data:[12.15,11.84,8.71,7.68,7.32,6.75,4.51],backgroundColor:['#ef4444','#f87171','#f59e0b','#fbbf24','#60a5fa','#93c5fd','#22c55e']}]},options:{...cfg(),indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e2535'}},y:{ticks:{color:'#94a3b8',font:{size:10}},grid:{display:false}}}}});
+    new Chart(document.getElementById('c-regmode'),{type:'bar',data:{labels:['East of England','London','Midlands','NE & Yorks','North West','South East','South West'],datasets:[{label:'Face-to-Face',data:[7.54,14.39,10.60,8.30,12.71,8.77,5.76],backgroundColor:'#ef4444'},{label:'Telephone',data:[5.49,6.47,5.24,4.77,8.60,5.60,1.85],backgroundColor:'#60a5fa'}]},options:{...cfg()}});
+  }
+  if(id==='modes'){
+    new Chart(document.getElementById('c-modedna'),{type:'doughnut',data:{labels:['Face-to-Face (10.65%)','Telephone (5.77%)','Home Visit (2.68%)','Video/Online (1.94%)'],datasets:[{data:[10.65,5.77,2.68,1.94],backgroundColor:['#ef4444','#f59e0b','#10b981','#8b5cf6'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11},boxWidth:12}}}}});
+    new Chart(document.getElementById('c-vid'),{type:'line',data:{labels:['Jul 22','Oct 22','Jan 23','Apr 23','Jul 23','Oct 23','Jan 24','Apr 24','Jul 24','Oct 24','Dec 24'],datasets:[{label:'Video/Online % of all appointments',data:[0.58,0.72,0.64,0.72,1.87,2.30,3.23,4.13,4.76,4.48,5.54],borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,.15)',fill:true,tension:.35,pointRadius:3}]},options:{...cfg(),scales:{x:{ticks:{color:'#64748b',font:{size:9}},grid:{color:'#1e2535'}},y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#1e2535'},min:0}}}});
+  }
+  if(id==='deprivation'){
+    new Chart(document.getElementById('c-dep'),{type:'bar',data:{labels:['Bands 5–6 (More Deprived)','Bands 7–8 (Mid)','Bands 9–10 (Least Deprived)'],datasets:[{label:'Avg DNA Rate %',data:[6.12,6.35,7.40],backgroundColor:['#60a5fa','#f59e0b','#ef4444']},{label:'Min DNA Rate %',data:[5.71,3.35,3.30],backgroundColor:['rgba(96,165,250,.4)','rgba(245,158,11,.4)','rgba(239,68,68,.4)']},{label:'Max DNA Rate %',data:[6.37,11.30,11.30],backgroundColor:['rgba(96,165,250,.2)','rgba(245,158,11,.2)','rgba(239,68,68,.2)']}]},options:{...cfg()}});
+  }
+  if(id==='league'){
+    new Chart(document.getElementById('c-dist'),{type:'bar',data:{labels:['0–2%','2–4%','4–6%','6–8%','8–10%','10–12%','12–14%','14–16%','16%+'],datasets:[{label:'Number of Sub-ICBs',data:[2,8,15,18,14,13,10,8,8],backgroundColor:['#22c55e','#22c55e','#4ade80','#86efac','#f59e0b','#fb923c','#f97316','#ef4444','#7f1d1d']}]},options:{...cfg(),plugins:{legend:{display:false}}}});
+  }
+}
+
+// Build first tab
+built['overview']=true;
+setTimeout(()=>buildTab('overview'),100);
+</script>
+</body>
+</html>

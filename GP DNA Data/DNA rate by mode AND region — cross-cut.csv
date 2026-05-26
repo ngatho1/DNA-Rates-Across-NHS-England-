@@ -1,0 +1,15 @@
+REGION_NAME,APPOINTMENT_MODE,dna_rate_pct
+East of England,Face-to-Face,7.54
+East of England,Telephone,5.49
+London,Face-to-Face,14.39
+London,Telephone,6.47
+Midlands,Face-to-Face,10.6
+Midlands,Telephone,5.24
+North East and Yorkshire,Face-to-Face,8.3
+North East and Yorkshire,Telephone,4.77
+North West,Face-to-Face,12.71
+North West,Telephone,8.6
+South East,Face-to-Face,8.77
+South East,Telephone,5.6
+South West,Face-to-Face,5.76
+South West,Telephone,1.85

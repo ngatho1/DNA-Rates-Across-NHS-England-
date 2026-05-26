@@ -1,0 +1,97 @@
+SUB_ICB_LOCATION_CODE,SUB_ICB_LOCATION_NAME,REGION_NAME,dna_count,total_appointments,dna_rate_pct
+05Q,NHS Staffordshire and Stoke-on-Trent ICB - 05Q,Midlands,974,2966,32.84
+15C,"NHS Bristol, North Somerset and South Gloucestershire ICB - 15C",South West,45,206,21.84
+06N,NHS Hertfordshire and West Essex ICB - 06N,East of England,14422,67107,21.49
+14Y,"NHS Buckinghamshire, Oxfordshire and Berkshire West ICB - 14Y",South East,656,3780,17.35
+99A,NHS Cheshire and Merseyside ICB - 99A,North West,277,1636,16.93
+02G,NHS Lancashire and South Cumbria ICB - 02G,North West,8031,51693,15.54
+14L,NHS Greater Manchester ICB - 14L,North West,27365,183885,14.88
+05W,NHS Staffordshire and Stoke-on-Trent ICB - 05W,Midlands,8682,58972,14.72
+01A,NHS Lancashire and South Cumbria ICB - 01A,North West,20253,138094,14.67
+B2M3M,NHS Coventry and Warwickshire ICB - B2M3M,Midlands,41456,284223,14.59
+01D,NHS Greater Manchester ICB - 01D,North West,21827,153381,14.23
+00V,NHS Greater Manchester ICB - 00V,North West,11466,81701,14.03
+01G,NHS Greater Manchester ICB - 01G,North West,16130,115100,14.01
+00R,NHS Lancashire and South Cumbria ICB - 00R,North West,1520,11138,13.65
+04Y,NHS Staffordshire and Stoke-on-Trent ICB - 04Y,Midlands,4909,36761,13.35
+93C,NHS North Central London ICB - 93C,London,100393,759265,13.22
+02X,NHS South Yorkshire ICB - 02X,North East and Yorkshire,11582,87974,13.17
+72Q,NHS South East London ICB - 72Q,London,98653,749664,13.16
+A3A8R,NHS North East London ICB - A3A8R,London,117916,899652,13.11
+27D,NHS Cheshire and Merseyside ICB - 27D,North West,11491,91096,12.61
+10Q,"NHS Buckinghamshire, Oxfordshire and Berkshire West ICB - 10Q",South East,8788,73076,12.03
+02A,NHS Greater Manchester ICB - 02A,North West,1257,10480,11.99
+00N,NHS North East and North Cumbria ICB - 00N,North East and Yorkshire,14457,121252,11.92
+01Y,NHS Greater Manchester ICB - 01Y,North West,6726,57157,11.77
+36L,NHS South West London ICB - 36L,London,50488,430713,11.72
+36J,NHS West Yorkshire ICB - 36J,North East and Yorkshire,20350,175890,11.57
+15E,NHS Birmingham and Solihull ICB - 15E,Midlands,34754,303861,11.44
+01F,NHS Cheshire and Merseyside ICB - 01F,North West,6004,52713,11.39
+D4U1Y,NHS Frimley ICB - D4U1Y,South East,12166,107455,11.32
+78H,NHS Northamptonshire ICB - 78H,Midlands,24472,216540,11.3
+02M,NHS Lancashire and South Cumbria ICB - 02M,North West,459,4064,11.29
+00T,NHS Greater Manchester ICB - 00T,North West,10140,91908,11.03
+99C,NHS North East and North Cumbria ICB - 99C,North East and Yorkshire,2138,19960,10.71
+00Y,NHS Greater Manchester ICB - 00Y,North West,3380,31599,10.7
+M1J4Y,"NHS Bedfordshire, Luton and Milton Keynes ICB - M1J4Y",East of England,40158,375650,10.69
+W2U3Z,NHS North West London ICB - W2U3Z,London,145573,1383726,10.52
+01H,NHS North East and North Cumbria ICB - 01H,North East and Yorkshire,8875,85760,10.35
+M2L0M,"NHS Shropshire, Telford and Wrekin ICB - M2L0M",Midlands,6812,66383,10.26
+12F,NHS Cheshire and Merseyside ICB - 12F,North West,2263,22341,10.13
+X2C4Y,NHS West Yorkshire ICB - X2C4Y,North East and Yorkshire,16932,171438,9.88
+06T,NHS Suffolk and North East Essex ICB - 06T,East of England,1667,17187,9.7
+13T,NHS North East and North Cumbria ICB - 13T,North East and Yorkshire,8821,96068,9.18
+84H,NHS North East and North Cumbria ICB - 84H,North East and Yorkshire,10779,121731,8.85
+03F,NHS Humber and North Yorkshire ICB - 03F,North East and Yorkshire,7679,87037,8.82
+91Q,NHS Kent and Medway ICB - 91Q,South East,47983,555960,8.63
+00P,NHS North East and North Cumbria ICB - 00P,North East and Yorkshire,9451,109818,8.61
+02T,NHS West Yorkshire ICB - 02T,North East and Yorkshire,17253,200567,8.6
+01K,NHS Lancashire and South Cumbria ICB - 01K,North West,4121,49323,8.36
+01X,NHS Cheshire and Merseyside ICB - 01X,North West,8420,101358,8.31
+04C,"NHS Leicester, Leicestershire and Rutland ICB - 04C",Midlands,13126,161438,8.13
+03W,"NHS Leicester, Leicestershire and Rutland ICB - 03W",Midlands,6478,81131,7.98
+02H,NHS Greater Manchester ICB - 02H,North West,5049,63877,7.9
+00Q,NHS Lancashire and South Cumbria ICB - 00Q,North West,3523,44689,7.88
+D2P2L,NHS Black Country ICB - D2P2L,Midlands,17001,217153,7.83
+05D,NHS Staffordshire and Stoke-on-Trent ICB - 05D,Midlands,1375,17754,7.74
+09D,NHS Sussex ICB - 09D,South East,2442,31792,7.68
+03Q,NHS Humber and North Yorkshire ICB - 03Q,North East and Yorkshire,6685,90115,7.42
+70F,NHS Sussex ICB - 70F,South East,8002,109511,7.31
+99G,NHS Mid and South Essex ICB - 99G,East of England,12604,177731,7.09
+02E,NHS Cheshire and Merseyside ICB - 02E,North West,12262,176835,6.93
+03L,NHS South Yorkshire ICB - 03L,North East and Yorkshire,19281,281000,6.86
+07G,NHS Mid and South Essex ICB - 07G,East of England,6000,88149,6.81
+42D,NHS Humber and North Yorkshire ICB - 42D,North East and Yorkshire,8750,129404,6.76
+03N,NHS South Yorkshire ICB - 03N,North East and Yorkshire,20541,306568,6.7
+D9Y0V,NHS Hampshire and Isle Of Wight ICB - D9Y0V,South East,15473,231197,6.69
+04V,"NHS Leicester, Leicestershire and Rutland ICB - 04V",Midlands,10659,164015,6.5
+15N,NHS Devon ICB - 15N,South West,1975,30995,6.37
+18C,NHS Herefordshire and Worcestershire ICB - 18C,Midlands,22776,358568,6.35
+71E,NHS Lincolnshire ICB - 71E,Midlands,10243,165984,6.17
+06H,NHS Cambridgeshire and Peterborough ICB - 06H,East of England,11803,193200,6.11
+06K,NHS Hertfordshire and West Essex ICB - 06K,East of England,21734,370397,5.87
+01V,NHS Cheshire and Merseyside ICB - 01V,North West,371,6347,5.85
+11X,NHS Somerset ICB - 11X,South West,601,10530,5.71
+11M,NHS Gloucestershire ICB - 11M,South West,11008,193683,5.68
+92A,NHS Surrey Heartlands ICB - 92A,South East,19026,343087,5.55
+06Q,NHS Mid and South Essex ICB - 06Q,East of England,8587,170845,5.03
+00L,NHS North East and North Cumbria ICB - 00L,North East and Yorkshire,1021,20669,4.94
+16C,NHS North East and North Cumbria ICB - 16C,North East and Yorkshire,2787,56706,4.91
+02P,NHS South Yorkshire ICB - 02P,North East and Yorkshire,5385,112741,4.78
+02Y,NHS Humber and North Yorkshire ICB - 02Y,North East and Yorkshire,6953,145322,4.78
+15M,NHS Derby and Derbyshire ICB - 15M,Midlands,15051,315722,4.77
+03K,NHS Humber and North Yorkshire ICB - 03K,North East and Yorkshire,4472,100837,4.43
+52R,NHS Nottingham and Nottinghamshire ICB - 52R,Midlands,5064,117825,4.3
+15F,NHS West Yorkshire ICB - 15F,North East and Yorkshire,23803,554509,4.29
+92G,"NHS Bath and North East Somerset, Swindon and Wiltshire ICB - 92G",South West,4498,115686,3.89
+26A,NHS Norfolk and Waveney ICB - 26A,East of England,6682,177974,3.75
+07H,NHS Hertfordshire and West Essex ICB - 07H,East of England,1640,47134,3.48
+11J,NHS Dorset ICB - 11J,South West,6538,194928,3.35
+97R,NHS Sussex ICB - 97R,South East,2032,61635,3.3
+11N,NHS Cornwall and The Isles Of Scilly ICB - 11N,South West,89,2718,3.27
+03R,NHS West Yorkshire ICB - 03R,North East and Yorkshire,2353,72920,3.23
+99F,NHS Mid and South Essex ICB - 99F,East of England,2707,85125,3.18
+99E,NHS Mid and South Essex ICB - 99E,East of England,4175,161228,2.59
+06L,NHS Suffolk and North East Essex ICB - 06L,East of England,839,37883,2.21
+03H,NHS Humber and North Yorkshire ICB - 03H,North East and Yorkshire,0,12,0.0
+07K,NHS Suffolk and North East Essex ICB - 07K,East of England,0,275,0.0
